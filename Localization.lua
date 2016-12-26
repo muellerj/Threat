@@ -5,7 +5,7 @@
 ]]--
 
 BINDING_NAME_PROT			= "Attack";
-BINDING_HEADER_PROT			= "Fury";
+BINDING_HEADER_PROT			= "Prot";
 
 CLASS_DRUID_PROT			= "Druid";
 CLASS_HUNTER_PROT			= "Hunter";

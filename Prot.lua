@@ -353,6 +353,15 @@ function Prot()
 			AttackTarget();
 		end
 
+    if (ActiveStance() ~= 2) then
+      CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
+      Debug("Changing to def stance");
+    elseif (SpellReady(ABILITY_REVENGE_PROT)) then
+      CastSpellByName(ABILITY_REVENGE_PROT);
+      Debug("Revenge");
+    else
+      Debug("Not casting anything");
+    end
 
 
 	end
