@@ -1,0 +1,7 @@
+## Interface: 12000
+## Title: Prot
+## Notes: To make Warrior tanking easier.
+## Author: Danjo
+## DefaultState: enabled
+## OptionalDeps: none
+Prot.xml
