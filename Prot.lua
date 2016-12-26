@@ -347,22 +347,65 @@ function Prot_RunnerDetect(arg1, arg2)
 	end
 end
 
+function HasFiveSunderArmors(unit)
+	local id = 1;
+	while (UnitDebuff(unit, id)) do
+		local debuffTexture, debuffAmount = UnitDebuff(unit, id);
+		if (string.find(debuffTexture, "Sunder")) then
+      if (debuffAmount == 5) then
+        return true;
+      else
+        return false;
+      end
+		end
+		id = id + 1;
+	end
+	return false;
+end
+
+function RevengeReady(nr)
+	local tim = GetTime();
+	if nr == 1 then	
+		RVrt = tim + 4;
+	elseif nr == 2 then	
+		if tim < RVrt then
+			RVrd = true
+		end
+		return RVrd;
+	end
+end
+
 function Prot()
 	if (Prot_Configuration["Enabled"] and not UnitIsCivilian("target") and UnitClass("player") == CLASS_WARRIOR_PROT and ProtTalents) then
+
+    local rage = UnitMana("player");
+
 		if (Prot_Configuration["AutoAttack"] and not ProtAttack) then
+      Debug("Starting AutoAttack");
 			AttackTarget();
 		end
 
     if (ActiveStance() ~= 2) then
-      CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
       Debug("Changing to def stance");
+      CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
+    end
+
+    if (SpellReady(ABILITY_SHIELD_SLAM_PROT) and rage >= 20) then
+      Debug("Shield slam");
+      --CastSpellByName(ABILITY_SHIELD_SLAM_PROT);
+      CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
     elseif (SpellReady(ABILITY_REVENGE_PROT)) then
-      CastSpellByName(ABILITY_REVENGE_PROT);
       Debug("Revenge");
+      CastSpellByName(ABILITY_REVENGE_PROT);
+    elseif (SpellReady(ABILITY_SUNDER_ARMOR_PROT) and rage >= 15 and not (HasFiveSunderArmors("target"))) then
+      Debug("Sunder armor");
+      CastSpellByName(ABILITY_SUNDER_ARMOR_PROT);
+    elseif (SpellReady(ABILITY_HEROIC_STRIKE_PROT) and rage >= 25) then
+      Debug("Heroic strike");
+      CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
     else
       Debug("Not casting anything");
     end
-
 
 	end
 end	
@@ -522,22 +565,8 @@ function Prot_OnLoad()
 	this:RegisterEvent("PLAYER_REGEN_DISABLED");
 	this:RegisterEvent("PLAYER_ENTER_COMBAT");
 	this:RegisterEvent("PLAYER_LEAVE_COMBAT");
-	this:RegisterEvent("CHAT_MSG_COMBAT_SELF_MISSES");
-	this:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE");
-	this:RegisterEvent("CHAT_MSG_MONSTER_EMOTE");
-	this:RegisterEvent("VARIABLES_LOADED");
-	this:RegisterEvent("CHARACTER_POINTS_CHANGED");
-	this:RegisterEvent("PLAYER_TARGET_CHANGED")
-
-	this:RegisterEvent("CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE");
-	this:RegisterEvent("CHAT_MSG_SPELL_HOSTILEPLAYER_DAMAGE");
-	this:RegisterEvent("CHAT_MSG_SPELL_CREATURE_VS_CREATURE_BUFF");
-	this:RegisterEvent("CHAT_MSG_SPELL_HOSTILEPLAYER_BUFF");
-
-	this:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE");
-	this:RegisterEvent("CHAT_MSG_SPELL_AURA_GONE_SELF");
-
-	this:RegisterEvent("PLAYER_AURAS_CHANGED");
+  this:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE");
+  this:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES");
 
 	ProtLastSpellCast = GetTime();
 	ProtLastStanceCast = GetTime();
@@ -646,6 +675,10 @@ function Prot_OnEvent(event)
 		ProtAttack = true;
 	elseif (event == "PLAYER_LEAVE_COMBAT") then
 		ProtAttack = nil;
+	elseif (event == "CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES")then
+		if string.find(arg1,"You block") or string.find(arg1,"You parry") or string.find(arg1,"You dodge") then
+			RevengeReady(1);
+		end
 	end
 end
 
