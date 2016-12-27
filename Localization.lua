@@ -1,7 +1,7 @@
 --[[
-	Fury - English Localization
+	Prot - English Localization
 
-	By: Bhaerau
+	By: Danjo
 ]]--
 
 BINDING_NAME_PROT			= "Attack";
