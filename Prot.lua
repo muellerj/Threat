@@ -75,18 +75,6 @@ function SpellReady(spellname)
 	return nil;
 end
 
-function HasDebuff(unit, texturename)
-	local id = 1;
-	while (UnitDebuff(unit, id)) do
-		local debuffTexture = UnitDebuff(unit, id);
-		if (string.find(debuffTexture, texturename)) then
-			return true;
-		end
-		id = id + 1;
-	end
-	return nil;
-end
-
 function HasBuff(unit, texturename)
 	local id = 1;
 	while (UnitBuff(unit, id)) do
@@ -112,30 +100,6 @@ function ActiveStance()
 	return nil;
 end
 
-function Weapon()
-	--Detect if a suitable weapon (not a skinning knife/mining pick and not broken) is present
-	if (GetInventoryItemLink("player", 16)) then
-		local _, _, itemCode = strfind(GetInventoryItemLink("player", 16), "(%d+):");
-		local itemName, itemLink, _, _, itemType = GetItemInfo(itemCode);
-		if (itemLink ~= "item:7005:0:0:0" and itemLink ~= "item:2901:0:0:0" and not GetInventoryItemBroken("player", 16)) then
-			return true;
-		end
-	end
-	return nil;
-end
-
-function Shield()
-	--Detect if a shield is present
-	if (GetInventoryItemLink("player", 17)) then
-		local _, _, itemCode = strfind(GetInventoryItemLink("player", 17), "(%d+):")
-		local _, _, _, _, _, itemType = GetItemInfo(itemCode)
-		if (itemType == ITEM_SHIELDS_PROT and not GetInventoryItemBroken("player", 17)) then
-			return true;
-		end
-	end
-	return nil;
-end
-
 function HasFiveSunderArmors(unit)
 	local id = 1;
 	while (UnitDebuff(unit, id)) do
@@ -152,16 +116,12 @@ function HasFiveSunderArmors(unit)
 	return nil;
 end
 
-function RevengeReady(nr)
-	local tim = GetTime();
-	if nr == 1 then	
-		RevengeReadyUntil = tim + 4;
-	elseif nr == 2 then	
-		if tim < RevengeReadyUntil then
-      return true;
-		end
-	end
-  return nil;
+function RevengeAvail()
+  if GetTime() < RevengeReadyUntil then
+    return true;
+  else
+    return nil;
+  end
 end
 
 function Prot()
@@ -183,7 +143,7 @@ function Prot()
       Debug("Shield slam");
       --CastSpellByName(ABILITY_SHIELD_SLAM_PROT);
       CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
-    elseif (SpellReady(ABILITY_REVENGE_PROT) and RevengeReady(2) and rage >= 5) then
+    elseif (SpellReady(ABILITY_REVENGE_PROT) and RevengeAvail() and rage >= 5) then
       Debug("Revenge");
       CastSpellByName(ABILITY_REVENGE_PROT);
     elseif (SpellReady(ABILITY_SUNDER_ARMOR_PROT) and rage >= 15 and not (HasFiveSunderArmors("target"))) then
@@ -192,18 +152,12 @@ function Prot()
     elseif (SpellReady(ABILITY_HEROIC_STRIKE_PROT) and rage >= 25) then
       Debug("Heroic strike");
       CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
-    else
-      Debug("Not casting anything");
     end
 
 	end
 end	
 
---------------------------------------------------
---
 -- Chat Handlers
---
---------------------------------------------------
 
 function Prot_SlashCommand(msg)
 	local _, _, command, options = string.find(msg, "([%w%p]+)%s*(.*)$");
@@ -251,7 +205,7 @@ function Prot_OnEvent(event)
     or string.find(arg1,"You parry") 
     or string.find(arg1,"You dodge") then
       Debug("Revenge soon ready");
-			RevengeReady(1);
+      RevengeReadyUntil = GetTime() + 4;
 		end
 	end
 end
