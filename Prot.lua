@@ -166,7 +166,29 @@ function Prot()
     end
 
 	end
-end	
+end
+
+function Bloodrage()
+	if (UnitClass("player") == CLASS_WARRIOR_PROT) then
+    if ShieldSlamLearned() then
+      if ActiveStance() ~= 2 then
+        Debug("Changing to def stance");
+        CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
+      else
+        Debug("Activating Bloodrage in def");
+        CastSpellByName(ABILITY_BLOODRAGE_PROT);
+      end
+    else
+      if ActiveStance() ~= 3 then
+        Debug("Changing to bersi stance");
+        CastSpellByName(ABILITY_BERSERKER_STANCE_PROT);
+      else
+        Debug("Activating Bloodrage in bersi");
+        CastSpellByName(ABILITY_BLOODRAGE_PROT);
+      end
+    end
+  end
+end
 
 -- Chat Handlers
 
