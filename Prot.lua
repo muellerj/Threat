@@ -124,6 +124,18 @@ function RevengeAvail()
   end
 end
 
+function ShieldSlamLearned()
+	if UnitClass("player") == "Warrior" then
+		local _, _, _, _, ss = GetTalentInfo(3,17);
+		if (ss == 1) then
+      return true;
+    else
+      return nil;
+		end
+	end
+end
+
+
 function Prot()
 	if (Prot_Configuration["Enabled"] and not UnitIsCivilian("target") and UnitClass("player") == CLASS_WARRIOR_PROT) then
 
@@ -139,10 +151,9 @@ function Prot()
       CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
     end
 
-    if (SpellReady(ABILITY_SHIELD_SLAM_PROT) and rage >= 20) then
+    if (SpellReady(ABILITY_SHIELD_SLAM_PROT) and rage >= 20 and ShieldSlamLearned()) then
       Debug("Shield slam");
-      --CastSpellByName(ABILITY_SHIELD_SLAM_PROT);
-      CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
+      CastSpellByName(ABILITY_SHIELD_SLAM_PROT);
     elseif (SpellReady(ABILITY_REVENGE_PROT) and RevengeAvail() and rage >= 5) then
       Debug("Revenge");
       CastSpellByName(ABILITY_REVENGE_PROT);
