@@ -13,18 +13,22 @@ included, since they have different intentions.
 
 Clone the repository into your `Addons` folder:
 
-    cd <WOW_BASE_DIR>
-    cd Interface/Addons
+    cd <WOW_BASE_DIR>/Interface/Addons
     git clone https://github.com/muellerj/Prot
 
 Create a macro to call `Prot()` or `/prot`:
 
     /prot
 
+    # or
+
+    /script Prot();
+
 ## Commands
 
 `Prot` can be enabled or disabled and its operation inspected:
 
+    /prot             Cast "best" threat ability
     /prot enable      Enable Prot
     /prot disable     Disable Prot
     /prot debug       Toggle debug messages on/off
