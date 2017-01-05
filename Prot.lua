@@ -105,7 +105,7 @@ function HasFiveSunderArmors(unit)
   while (UnitDebuff(unit, id)) do
     local debuffTexture, debuffAmount = UnitDebuff(unit, id);
     if (string.find(debuffTexture, "Sunder")) then
-      if (debuffAmount == 5) then
+      if (debuffAmount >= 5) then
         return true;
       else
         return nil;
