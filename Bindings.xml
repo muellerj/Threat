@@ -1,5 +1,5 @@
 <Bindings>
-	<Binding name="PROT" header="PROT">
+  <Binding name="PROT" header="PROT">
     Prot();
-	</Binding>
+  </Binding>
 </Bindings>
