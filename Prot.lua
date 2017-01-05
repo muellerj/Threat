@@ -2,6 +2,8 @@
   Prot
 
   By: Ollowain.
+	Credit to Fury.lua by Bhaerau.
+
 ]]--
 
 --------------------------------------------------
