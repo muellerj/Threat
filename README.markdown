@@ -21,10 +21,13 @@ Create a macro to call `Prot()` or `/prot`:
 
     /prot
 
-## Configuration
+## Commands
 
-`Prot` can be enabled or disabled via `/prot enable`/`/prot disable` and its
-operation can be inspected via `/prot debug` (toggles debug messages on/off).
+`Prot` can be enabled or disabled and its operation inspected:
+
+    /prot enable      Enable Prot
+    /prot disable     Disable Prot
+    /prot debug       Toggle debug messages on/off
 
 ## Bugtracker
 
