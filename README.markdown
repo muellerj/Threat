@@ -33,6 +33,11 @@ Create a macro to call `Prot()` or `/prot`:
 
 Please create an issue at https://github.com/muellerj/Prot/issues
 
+## Credit
+
+Many of the boilerplate functions are taken directly from `Fury.lua` by Bhaerau
+(http://www.vanilla-addons.com/dls/fury/).
+
 ## Contributing
 
 1. Fork it (https://github.com/muellerj/Prot/fork)
