@@ -6,11 +6,7 @@
 
 ]]--
 
---------------------------------------------------
---
 -- Variables
---
---------------------------------------------------
 local RevengeReadyUntil = 0;
 
 function Prot_Configuration_Init()
@@ -19,16 +15,11 @@ function Prot_Configuration_Init()
   end
 
   if (Prot_Configuration["Enabled"] == nil) then
-    Prot_Configuration["Enabled"] = true; --Set to false to disable the addon
+    Prot_Configuration["Enabled"] = true;
   end
   if (Prot_Configuration["Debug"] == nil) then
-    Prot_Configuration["Debug"] = false; --Set to true to enable debugging feedback
+    Prot_Configuration["Debug"] = false;
   end
-end
-
-function Prot_Configuration_Default()
-  Prot_Configuration["Enabled"] = true;
-  Prot_Configuration["Debug"] = false;
 end
 
 -- Normal Functions
@@ -89,10 +80,7 @@ function HasBuff(unit, texturename)
   return nil;
 end
 
---------------------------------------------------
-
 function ActiveStance()
-  --Detect the active stance
   for i = 1, 3 do
     local _, _, active = GetShapeshiftFormInfo(i);
     if (active) then
