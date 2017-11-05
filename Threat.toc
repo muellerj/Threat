@@ -1,7 +1,7 @@
 ## Interface: 12000
-## Title: Prot
+## Title: Threat
 ## Notes: To make Warrior tanking easier.
 ## Author: Ollowain
 ## DefaultState: enabled
 ## OptionalDeps: none
-Prot.xml
+Threat.xml

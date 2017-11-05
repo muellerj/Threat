@@ -1,4 +1,4 @@
-# Prot
+# Threat
 
 A World of Warcraft Vanilla (v1.1.12) Addon to simplify Warrior tanking.
 
@@ -14,28 +14,26 @@ included, since they have different intentions.
 Clone the repository into your `Addons` folder:
 
     cd <WOW_BASE_DIR>/Interface/Addons
-    git clone https://github.com/muellerj/Prot
+    git clone https://github.com/muellerj/Threat
 
-Create a macro to call `Prot()` or `/prot`:
+Create a macro to call `Threat()` or `/threat`:
 
-    /prot
+    /threat
 
     # or
 
-    /script Prot();
+    /script Threat();
 
 ## Commands
 
-`Prot` can be enabled or disabled and its operation inspected:
+`Threat` can be enabled or disabled and its operation inspected:
 
-    /prot             Cast "best" threat ability
-    /prot enable      Enable Prot
-    /prot disable     Disable Prot
-    /prot debug       Toggle debug messages on/off
+    /threat             Cast "best" threat ability
+    /threat debug       Toggle debug messages on/off
 
 ## Bugtracker
 
-Please create an issue at https://github.com/muellerj/Prot/issues
+Please create an issue at https://github.com/muellerj/Threat/issues
 
 ## Credit
 
@@ -44,7 +42,7 @@ Many of the boilerplate functions are taken directly from `Fury.lua` by Bhaerau
 
 ## Contributing
 
-1. Fork it (https://github.com/muellerj/Prot/fork)
+1. Fork it (https://github.com/muellerj/Threat/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

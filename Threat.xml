@@ -7,16 +7,16 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Script file="Localization.lua"/>
   
   <!-- My Script -->
-  <Script file="Prot.lua"/>
+  <Script file="Threat.lua"/>
 
   <!-- My AddOn Frames -->
-  <Frame name="ProtFrame" parent="UIParent">
+  <Frame name="ThreatFrame" parent="UIParent">
     <Scripts>
       <OnLoad>
-        Prot_OnLoad();
+        Threat_OnLoad();
       </OnLoad>
       <OnEvent>
-        Prot_OnEvent(event);
+        Threat_OnEvent(event);
       </OnEvent>
     </Scripts>
   </Frame>

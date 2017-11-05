@@ -1,24 +1,19 @@
 --[[
-  Prot
-
+  Threat
   By: Ollowain.
-	Credit to Fury.lua by Bhaerau.
-
+	Credit: Fury.lua by Bhaerau.
 ]]--
 
 -- Variables
 local RevengeReadyUntil = 0;
 
-function Prot_Configuration_Init()
-  if (not Prot_Configuration) then
-    Prot_Configuration = { };
+function Threat_Configuration_Init()
+  if (not Threat_Configuration) then
+    Threat_Configuration = { };
   end
 
-  if (Prot_Configuration["Enabled"] == nil) then
-    Prot_Configuration["Enabled"] = true;
-  end
-  if (Prot_Configuration["Debug"] == nil) then
-    Prot_Configuration["Debug"] = false;
+  if (Threat_Configuration["Debug"] == nil) then
+    Threat_Configuration["Debug"] = false;
   end
 end
 
@@ -32,7 +27,7 @@ local function Print(msg)
 end
 
 local function Debug(msg)
-  if (Prot_Configuration["Debug"]) then
+  if (Threat_Configuration["Debug"]) then
     if (not DEFAULT_CHAT_FRAME) then
       return;
     end
@@ -61,7 +56,7 @@ function SpellReady(spellname)
   local id = SpellId(spellname);
   if (id) then
     local start, duration = GetSpellCooldown(id, 0);
-    if (start == 0 and duration == 0 and ProtLastSpellCast + 1 <= GetTime()) then
+    if (start == 0 and duration == 0 and ThreatLastSpellCast + 1 <= GetTime()) then
       return true;
     end
   end
@@ -126,58 +121,58 @@ function ShieldSlamLearned()
 end
 
 
-function Prot()
-  if (Prot_Configuration["Enabled"] and not UnitIsCivilian("target") and UnitClass("player") == CLASS_WARRIOR_PROT) then
+function Threat()
+  if (not UnitIsCivilian("target") and UnitClass("player") == CLASS_WARRIOR_THREAT) then
 
     local rage = UnitMana("player");
 
-    if (not ProtAttack) then
+    if (not ThreatAttack) then
       Debug("Starting AutoAttack");
       AttackTarget();
     end
 
     if (ActiveStance() ~= 2) then
       Debug("Changing to def stance");
-      CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
+      CastSpellByName(ABILITY_DEFENSIVE_STANCE_THREAT);
     end
 
-    if (SpellReady(ABILITY_BATTLE_SHOUT_PROT) and not HasBuff("player", "Ability_Warrior_BattleShout") and rage >= 10) then
+    if (SpellReady(ABILITY_BATTLE_SHOUT_THREAT) and not HasBuff("player", "Ability_Warrior_BattleShout") and rage >= 10) then
       Debug("Battle Shout");
-      CastSpellByName(ABILITY_BATTLE_SHOUT_PROT);
-    elseif (SpellReady(ABILITY_SHIELD_SLAM_PROT) and rage >= 20 and ShieldSlamLearned()) then
+      CastSpellByName(ABILITY_BATTLE_SHOUT_THREAT);
+    elseif (SpellReady(ABILITY_SHIELD_SLAM_THREAT) and rage >= 20 and ShieldSlamLearned()) then
       Debug("Shield slam");
-      CastSpellByName(ABILITY_SHIELD_SLAM_PROT);
-    elseif (SpellReady(ABILITY_REVENGE_PROT) and RevengeAvail() and rage >= 5) then
+      CastSpellByName(ABILITY_SHIELD_SLAM_THREAT);
+    elseif (SpellReady(ABILITY_REVENGE_THREAT) and RevengeAvail() and rage >= 5) then
       Debug("Revenge");
-      CastSpellByName(ABILITY_REVENGE_PROT);
-    elseif (SpellReady(ABILITY_SUNDER_ARMOR_PROT) and rage >= 15 and not (HasFiveSunderArmors("target"))) then
+      CastSpellByName(ABILITY_REVENGE_THREAT);
+    elseif (SpellReady(ABILITY_SUNDER_ARMOR_THREAT) and rage >= 15 and not (HasFiveSunderArmors("target"))) then
       Debug("Sunder armor");
-      CastSpellByName(ABILITY_SUNDER_ARMOR_PROT);
-    elseif (SpellReady(ABILITY_HEROIC_STRIKE_PROT) and rage >= 25) then
+      CastSpellByName(ABILITY_SUNDER_ARMOR_THREAT);
+    elseif (SpellReady(ABILITY_HEROIC_STRIKE_THREAT) and rage >= 25) then
       Debug("Heroic strike");
-      CastSpellByName(ABILITY_HEROIC_STRIKE_PROT);
+      CastSpellByName(ABILITY_HEROIC_STRIKE_THREAT);
     end
 
   end
 end
 
 function Bloodrage()
-  if (UnitClass("player") == CLASS_WARRIOR_PROT) then
+  if (UnitClass("player") == CLASS_WARRIOR_THREAT) then
     if ShieldSlamLearned() then
       if ActiveStance() ~= 2 then
         Debug("Changing to def stance");
-        CastSpellByName(ABILITY_DEFENSIVE_STANCE_PROT);
+        CastSpellByName(ABILITY_DEFENSIVE_STANCE_THREAT);
       else
         Debug("Activating Bloodrage in def");
-        CastSpellByName(ABILITY_BLOODRAGE_PROT);
+        CastSpellByName(ABILITY_BLOODRAGE_THREAT);
       end
     else
       if ActiveStance() ~= 3 then
         Debug("Changing to bersi stance");
-        CastSpellByName(ABILITY_BERSERKER_STANCE_PROT);
+        CastSpellByName(ABILITY_BERSERKER_STANCE_THREAT);
       else
         Debug("Activating Bloodrage in bersi");
-        CastSpellByName(ABILITY_BLOODRAGE_PROT);
+        CastSpellByName(ABILITY_BLOODRAGE_THREAT);
       end
     end
   end
@@ -185,47 +180,47 @@ end
 
 -- Chat Handlers
 
-function Prot_SlashCommand(msg)
+function Threat_SlashCommand(msg)
   local _, _, command, options = string.find(msg, "([%w%p]+)%s*(.*)$");
   if (command) then
     command = string.lower(command);
   end
   if (command == nil or command == "") then
-    Prot();
+    Threat();
   elseif (command == "debug") then
-    if (Prot_Configuration["Debug"]) then
-      Prot_Configuration["Debug"] = false;
-      Print(BINDING_HEADER_PROT .. ": " .. SLASH_PROT_DEBUG .. " " .. SLASH_PROT_DISABLED .. ".")
+    if (Threat_Configuration["Debug"]) then
+      Threat_Configuration["Debug"] = false;
+      Print(BINDING_HEADER_THREAT .. ": " .. SLASH_THREAT_DEBUG .. " " .. SLASH_THREAT_DISABLED .. ".")
     else
-      Prot_Configuration["Debug"] = true;
-      Print(BINDING_HEADER_PROT .. ": " .. SLASH_PROT_DEBUG .. " " .. SLASH_PROT_ENABLED .. ".")
+      Threat_Configuration["Debug"] = true;
+      Print(BINDING_HEADER_THREAT .. ": " .. SLASH_THREAT_DEBUG .. " " .. SLASH_THREAT_ENABLED .. ".")
     end
   else
-    Print(SLASH_PROT_HELP)
+    Print(SLASH_THREAT_HELP)
   end
 end
 
 -- Event Handlers
 
-function Prot_OnLoad()
+function Threat_OnLoad()
   this:RegisterEvent("VARIABLES_LOADED");
   this:RegisterEvent("PLAYER_ENTER_COMBAT");
   this:RegisterEvent("PLAYER_LEAVE_COMBAT");
   this:RegisterEvent("CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES");
 
-  ProtLastSpellCast = GetTime();
-  ProtLastStanceCast = GetTime();
-  SlashCmdList["PROT"] = Prot_SlashCommand;
-  SLASH_PROT1 = "/prot";
+  ThreatLastSpellCast = GetTime();
+  ThreatLastStanceCast = GetTime();
+  SlashCmdList["THREAT"] = Threat_SlashCommand;
+  SLASH_THREAT1 = "/threat";
 end
 
-function Prot_OnEvent(event)
+function Threat_OnEvent(event)
   if (event == "VARIABLES_LOADED") then
-    Prot_Configuration_Init()
+    Threat_Configuration_Init()
   elseif (event == "PLAYER_ENTER_COMBAT") then
-    ProtAttack = true;
+    ThreatAttack = true;
   elseif (event == "PLAYER_LEAVE_COMBAT") then
-    ProtAttack = nil;
+    ThreatAttack = nil;
   elseif (event == "CHAT_MSG_COMBAT_CREATURE_VS_SELF_MISSES")then
     if string.find(arg1,"You block")
     or string.find(arg1,"You parry")
